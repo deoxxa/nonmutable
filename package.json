@@ -1,0 +1,32 @@
+{
+  "name": "nonmutable",
+  "version": "1.0.0",
+  "description": "Immutable data structures without the ceremony",
+  "main": "lib/index.js",
+  "scripts": {
+    "prepublish": "babel -d lib src",
+    "test": "mocha --reporter spec --compilers js:babel/register 'src/**/__tests__/*-test.js'",
+    "testw": "mocha -w --reporter spec --compilers js:babel/register 'src/**/__tests__/*-test.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deoxxa/nonmutable.git"
+  },
+  "keywords": [
+    "immutable",
+    "structure",
+    "merge",
+    "nested"
+  ],
+  "author": "Conrad Pankoff <deoxxa@fknsrs.biz> (http://www.fknsrs.biz/)",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/deoxxa/nonmutable/issues"
+  },
+  "homepage": "https://github.com/deoxxa/nonmutable#readme",
+  "devDependencies": {
+    "babel": "^5.8.29",
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3"
+  }
+}
