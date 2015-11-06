@@ -3,7 +3,11 @@ const append = (arr, ...e) => (arr || []).concat(e);
 const merge = (obj, src) => {
   let res = obj;
 
-  for (let k of Object.keys(src)) {
+  const keys = Object.keys(src);
+
+  for (let i = 0; i < keys.length; i++) {
+    const k = keys[i];
+
     if (res[k] === src[k]) {
       continue;
     }
@@ -41,7 +45,9 @@ const merge = (obj, src) => {
 const getIn = (obj, path, notSetValue) => {
   let r = obj || {};
 
-  for (let k of path) {
+  for (let i = 0; i < path.length; i++) {
+    const k = path[i];
+
     if (typeof r !== 'object' || r === null || r.constructor !== Object) {
       throw new Error(`encountered non-object value at ${k} via ${path.join('.')}`);
     }
