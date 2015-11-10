@@ -108,6 +108,10 @@ const insertAt = (arr, index, data) => {
 };
 
 const replaceAt = (arr, index, data) => {
+  if (arr[index] === data) {
+    return arr;
+  }
+
   return append(append(before(arr, index), data), ...after(arr, index + 1));
 };
 

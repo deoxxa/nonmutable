@@ -112,3 +112,35 @@ describe('merge', () => {
     assert.deepEqual(src, {z: new A(false, true)}, 'should not modify the original');
   });
 });
+
+describe('replaceAt', () => {
+  it('should replace a primitive value', () => {
+    const src = [1];
+    const sub = replaceAt(src, 0, 2);
+
+    assert.deepEqual(sub, [2]);
+  });
+
+  it('should take no action when the old and new primitive values are the same', () => {
+    const src = [1];
+    const sub = replaceAt(src, 0, 1);
+
+    assert.strictEqual(src, sub, 'should retain the identity');
+  });
+
+  it('should replace an object', () => {
+    const src = [{a: 1}];
+    const sub = replaceAt(src, 0, {a: 2});
+
+    assert.deepEqual(sub, [{a: 2}]);
+    assert.deepEqual(src, [{a: 1}], 'should not modify the original');
+  });
+
+  it('should take no action when the old and new object values are the same', () => {
+    const obj = {a: 1};
+    const src = [obj];
+    const sub = replaceAt(src, 0, obj);
+
+    assert.strictEqual(src, sub, 'should retain the identity');
+  });
+});
