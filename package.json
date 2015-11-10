@@ -1,6 +1,6 @@
 {
   "name": "nonmutable",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Immutable data structures without the ceremony",
   "main": "lib/index.js",
   "scripts": {
