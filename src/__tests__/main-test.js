@@ -144,3 +144,43 @@ describe('replaceAt', () => {
     assert.strictEqual(src, sub, 'should retain the identity');
   });
 });
+
+describe('getIn', () => {
+  it('should get a string', () => {
+    const src = {a: 'x'};
+    const sub = getIn(src, ['a'], 'y');
+
+    assert.strictEqual(sub, 'x');
+  });
+
+  it('should return a default', () => {
+    const src = {a: 'x'};
+    const sub = getIn(src, ['b'], 'y');
+
+    assert.strictEqual(sub, 'y');
+  });
+
+  it('should get an array', () => {
+    const arr = [1];
+    const src = {a: arr};
+    const sub = getIn(src, ['a'], [2]);
+
+    assert.strictEqual(sub, arr);
+  });
+
+  it('should get an array default', () => {
+    const arr = [1];
+    const src = {a: arr};
+    const sub = getIn(src, ['b'], [2]);
+
+    assert.deepEqual(sub, [2]);
+  });
+
+  it('should get a deeply nested array of objects', () => {
+    const arr = [{a: 'b', c: 'd'}, {e: 'f', g: 'h'}];
+    const src = {x: {y: arr}};
+    const sub = getIn(src, ['x', 'y'], []);
+
+    assert.strictEqual(arr, sub);
+  });
+});

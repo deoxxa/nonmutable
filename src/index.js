@@ -48,8 +48,10 @@ const getIn = (obj, path, notSetValue) => {
   for (let i = 0; i < path.length; i++) {
     const k = path[i];
 
-    if (typeof r !== 'object' || r === null || r.constructor !== Object) {
-      throw new Error(`encountered non-object value at ${k} via ${path.join('.')}`);
+    if (i < path.length - 1) {
+      if (typeof r !== 'object' || r === null || r.constructor !== Object) {
+        throw new Error(`encountered non-object value at ${k} via ${path.join('.')}`);
+      }
     }
 
     r = r[k];
