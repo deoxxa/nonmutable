@@ -1,6 +1,10 @@
-const append = (arr, ...e) => (arr || []).concat(e);
+// @flow
 
-const merge = (obj, src) => {
+export function append<T>(arr: ?Array<T>, ...e: Array<T>): Array<T> {
+  return (arr || []).concat(e);
+}
+
+export function merge<Object>(obj: Object, src: Object): Object {
   let res = obj;
 
   const keys = Object.keys(src);
@@ -40,9 +44,9 @@ const merge = (obj, src) => {
   }
 
   return res;
-};
+}
 
-const getIn = (obj, path, notSetValue) => {
+export function getIn<T>(obj: Object, path: Array<string>, notSetValue: T): T|any {
   let r = obj || {};
 
   for (let i = 0; i < path.length; i++) {
@@ -58,9 +62,15 @@ const getIn = (obj, path, notSetValue) => {
   }
 
   return typeof r === 'undefined' ? notSetValue : r;
-};
+}
 
-const updateIn = (obj, path, notSetValue, updater) => {
+function setAndRefine(obj: Object, key: string, value: any): Object {
+  const res = Object.assign({}, obj);
+  res[key] = value;
+  return res;
+}
+
+export function updateIn<T>(obj: Object, path: Array<string>, notSetValue: T, updater: (x: T) => T): Object {
   if (typeof obj !== 'object' || obj === null || obj.constructor !== Object) {
     throw new Error(`encountered non-object`);
   }
@@ -85,53 +95,43 @@ const updateIn = (obj, path, notSetValue, updater) => {
     return obj;
   }
 
-  return Object.assign({}, obj, {
-    [path[0]]: r,
-  });
-};
+  return setAndRefine(obj, path[0], r);
+}
 
-const setIn = (obj, path, value) => {
+export function setIn<T>(obj: Object, path: Array<string>, value: T): Object {
   return updateIn(obj, path, null, () => value);
-};
+}
 
-const mergeIn = (obj, path, data) => {
+export function mergeIn<T>(obj: Object, path: Array<string>, data: T): Object {
   return updateIn(obj, path, {}, (value) => merge(value, data));
-};
+}
 
-const addToSet = (arr, ...e) => e.reduce((a, v) => {
-  return a.indexOf(v) === -1 ? append(a, v) : a;
-}, arr);
+export function addToSet<T>(arr: Array<T>, ...e: Array<T>): Array<T> {
+  return e.reduce((a, v) => {
+    return a.indexOf(v) === -1 ? append(a, v) : a;
+  }, arr)
+}
 
-const before = (arr, index) => arr.slice(0, index);
-const after = (arr, index) => arr.slice(index);
+export function before<T>(arr: Array<T>, index: number): Array<T> {
+  return arr.slice(0, index);
+}
 
-const insertAt = (arr, index, data) => {
+export function after<T>(arr: Array<T>, index: number): Array<T> {
+  return arr.slice(index);
+}
+
+export function insertAt<T>(arr: Array<T>, index: number, data: T): Array<T> {
   return append(append(before(arr, index), data), ...after(arr, index));
-};
+}
 
-const replaceAt = (arr, index, data) => {
+export function replaceAt<T>(arr: Array<T>, index: number, data: T): Array<T> {
   if (arr[index] === data) {
     return arr;
   }
 
   return append(append(before(arr, index), data), ...after(arr, index + 1));
-};
+}
 
-const removeAt = (arr, index) => {
+export function removeAt<T>(arr: Array<T>, index: number): Array<T> {
   return append(before(arr, index), ...after(arr, index + 1));
-};
-
-export default {
-  addToSet,
-  after,
-  append,
-  before,
-  getIn,
-  insertAt,
-  merge,
-  mergeIn,
-  removeAt,
-  replaceAt,
-  setIn,
-  updateIn,
-};
+}

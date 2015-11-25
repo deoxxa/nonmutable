@@ -26,6 +26,7 @@
   "homepage": "https://github.com/deoxxa/nonmutable#readme",
   "devDependencies": {
     "babel": "^5.8.29",
+    "babel-plugin-flow-comments": "^1.0.9",
     "chai": "^3.4.0",
     "mocha": "^2.3.3"
   }

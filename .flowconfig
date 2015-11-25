@@ -1,0 +1,9 @@
+[ignore]
+lib/
+src/__tests__/
+
+[include]
+
+[libs]
+
+[options]
