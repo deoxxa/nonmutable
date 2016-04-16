@@ -4,7 +4,15 @@ export function append<T>(arr: ?Array<T>, ...e: Array<T>): Array<T> {
   return (arr || []).concat(e);
 }
 
-export function merge<Object>(obj: Object, src: Object): Object {
+export function merge<A, B>(obj: A, src: B): A|B {
+  if (typeof obj !== 'object' || obj === null || (obj.constructor && obj.constructor !== Object)) {
+    throw new Error(`obj must be a plain; instead was ${typeof obj}`)
+  }
+
+  if (typeof src !== 'object' || src === null || (obj.constructor && src.constructor !== Object)) {
+    throw new Error(`src must be a plain; instead was ${typeof src}`)
+  }
+
   let res = obj;
 
   const keys = Object.keys(src);
@@ -16,10 +24,10 @@ export function merge<Object>(obj: Object, src: Object): Object {
       continue;
     }
 
-    if (typeof src[k] === 'object' && src[k] !== null && src[k].constructor === Object) {
+    if (typeof src[k] === 'object' && src[k] !== null && (!src[k].constructor || src[k].constructor === Object)) {
       let sub = res[k];
 
-      if (typeof sub !== 'object' || sub === null || sub.constructor !== Object) {
+      if (typeof sub !== 'object' || sub === null || (!sub.constructor || sub.constructor !== Object)) {
         sub = {};
       }
 
@@ -30,13 +38,13 @@ export function merge<Object>(obj: Object, src: Object): Object {
       }
 
       if (res === obj) {
-        res = Object.assign({}, obj);
+        res = { ...obj };
       }
 
       res[k] = out;
     } else {
       if (res === obj) {
-        res = Object.assign({}, obj);
+        res = { ...obj };
       }
 
       res[k] = src[k];
@@ -64,10 +72,16 @@ export function getIn<T>(obj: Object, path: Array<string>, notSetValue: T): T|an
   return typeof r === 'undefined' ? notSetValue : r;
 }
 
-function setAndRefine(obj: Object, key: string, value: any): Object {
-  const res = Object.assign({}, obj);
-  res[key] = value;
-  return res;
+function setAndRefine<T>(obj: T, key: string, value: any): T {
+  if (typeof obj !== 'object' || obj === null || obj.constructor !== Object) {
+    throw new Error(`encountered non-object`);
+  }
+
+  if (obj[key] === value) {
+    return obj;
+  }
+
+  return Object.assign({}, obj, {[key]: value});
 }
 
 export function updateIn<T>(obj: Object, path: Array<string>, notSetValue: T, updater: (x: T) => T): Object {
